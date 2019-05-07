@@ -1,7 +1,7 @@
 from setuptools import setup
 
-setup(name='pytorch_vgg_named',
-      version='0.1',
+setup(name='pytorch-vgg-named',
+      version='0.2',
       url='http://github.com/black-puppydog/pytorch_vgg_named',
       author='Daan Wynen',
       author_email='daan.wynen@inria.fr',
@@ -11,8 +11,8 @@ setup(name='pytorch_vgg_named',
       long_description_content_type="text/markdown",
       python_requires='>=3.6',
       install_requires=[
-        'torch',
-        'torchvision',
+        'torch>=1.0',
+        'torchvision>=0.2',
       ],
       classifiers=[
         "Programming Language :: Python :: 3",

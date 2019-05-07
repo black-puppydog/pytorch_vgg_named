@@ -126,8 +126,6 @@ class SequentialExtractor(Sequential):
               unused -= {n}
               if n == targets:
                 break
-          print('removing these modules:')
-          pprint.pprint(unused)
           for n in unused:
             del self._modules[n]
           return
