@@ -1,8 +1,8 @@
 # Named VGG Feature Extractors
 
-The networks provided here are the same as in `torchvision.models.vgg`, but
-they are built differently, so that you can extract lists of features in a
-single call like this: 
+The networks provided here are the same (as in, the same weights and
+everything) as in `torchvision.models.vgg`, but they are built differently, so
+that you can extract lists of features in a single call like this: 
 
 ```python3
 r11, r31, r51 = net.forward(targets=['relu1_1', 'relu3_1', 'relu5_1'])
@@ -10,6 +10,9 @@ r11, r31, r51 = net.forward(targets=['relu1_1', 'relu3_1', 'relu5_1'])
 
 This is mostly useful for applications in Neural Style Transfer, where we often
 want to query sets of features from a network.
+For this purpose, there is also a function `vgg19_normalized` which loads the
+weights provided by Leon Gatys in his own implementation
+[on github](https://github.com/leongatys/PytorchNeuralStyleTransfer).
 
 ## Installation
 
@@ -91,6 +94,35 @@ with torch.no_grad():
   #   (conv2_1): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
   # )
 ```
+
+**For the normalized model only**, the preprocessing should be done like this:
+
+```python
+import torchvision.transforms as tvt
+prep = tvt.Compose([tvt.ToTensor(),
+                    # turn to BGR
+                    tvt.Lambda(lambda x: x[torch.LongTensor([2,1,0])]), 
+                    #subtract imagenet mean
+                    tvt.Normalize(mean=[0.40760392, 0.45795686, 0.48501961],
+                                  std=[1,1,1]),
+                    # scale to expected input range
+                    tvt.Lambda(lambda x: x.mul_(255))])
+```
+
+And postprocessing accordingly:
+
+```python
+postp = tvt.Compose([tvt.Lambda(lambda x: x/255), # don't use in-place
+                      # add imagenet mean
+                      tvt.Normalize(mean=[-0.40760392, -0.45795686, -0.48501961],
+                                    std=[1,1,1]),
+                      # turn to RGB
+                      tvt.Lambda(lambda x: x[torch.LongTensor([2,1,0])]),
+                      tvt.Lambda(lambda x: torch.clamp(x, 0, 1)),
+                      tvt.ToPILImage()])
+```
+
+**For the standard VGG models, use the canonical pytorch normalization!**
 
 ## License
 

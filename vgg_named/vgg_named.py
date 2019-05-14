@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 import torch.utils.model_zoo as model_zoo
 from collections import OrderedDict
@@ -10,6 +11,7 @@ __all__ = [
     'vgg19_bn', 'vgg19',
 ]
 
+VGG19_NORM_WEIGHTS = 'http://pascal.inrialpes.fr/data2/archetypal_style/vgg19_normalized_pytorch/vgg_conv_bethgelabs-35ec6ced.pth'
 
 class Flatten(nn.Module):
   def forward(self, x):
@@ -213,6 +215,14 @@ def vgg19_bn(pretrained=False, **kwargs):
     if pretrained:
         model.load_state_dict(load_unnamed_model(model, tvgg.vgg19_bn(True)))
     return model
+
+
+def vgg19_normalized():
+  model = vgg19()
+  model.prune('relu5_4')
+  model.load_state_dict(torch.utils.model_zoo.load_url(VGG19_NORM_WEIGHTS))
+  return model
+
 
 def load_unnamed_model(net, net_old):
   assert len(net.state_dict()) == len(net_old.state_dict()), \
