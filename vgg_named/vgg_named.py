@@ -8,7 +8,7 @@ from .sequential_extractor import SequentialExtractor
 
 __all__ = [
     'VGG', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn',
-    'vgg19_bn', 'vgg19',
+    'vgg19_bn', 'vgg19', 'vgg19_normalized', 'VGG19_NORM_WEIGHTS'
 ]
 
 VGG19_NORM_WEIGHTS = 'http://pascal.inrialpes.fr/data2/archetypal_style/vgg19_normalized_pytorch/vgg_conv_bethgelabs-35ec6ced.pth'
