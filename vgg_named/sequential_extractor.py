@@ -8,6 +8,8 @@ from torch._six import container_abcs
 import torch
 from torch.nn import Sequential
 
+__all__ = ['SequentialExtractor']
+
 class SequentialExtractor(Sequential):
     r"""A subclass of torch.nn.Sequential.
     Modules will be added to it in the order they are passed in the constructor.
