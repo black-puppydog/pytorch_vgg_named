@@ -217,10 +217,14 @@ def vgg19_bn(pretrained=False, **kwargs):
     return model
 
 
-def vgg19_normalized():
+def vgg19_normalized(pretrained=True):
   model = vgg19()
   model.prune('relu5_4')
-  model.load_state_dict(torch.utils.model_zoo.load_url(VGG19_NORM_WEIGHTS))
+  if pretrained:
+    model.load_state_dict(torch.utils.model_zoo.load_url(VGG19_NORM_WEIGHTS))
+  else:
+    print(('Attention: vgg19_normalized with pretrained=False is just a '
+           'truncated vgg19 network'))
   return model
 
 
